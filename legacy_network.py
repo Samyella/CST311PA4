@@ -62,6 +62,13 @@ def myNetwork():
     r5.cmd('ip route add 10.0.1.0/24 via 192.168.0.6')
     r5.cmd('ip route add 192.168.0.0/30 via 192.168.0.6')
 
+    # Start the chat server on h4
+    makeTerm(h4, title='Server', term='xterm', cmd='python3 tpa4_chat_server.py; bash')
+
+    # Start chat clients on h1, h2, and h3
+    makeTerm(h1, title='Client 1', term='xterm', cmd='python3 tpa4_chat_client.py; bash')
+    makeTerm(h2, title='Client 2', term='xterm', cmd='python3 tpa4_chat_client.py; bash')
+    makeTerm(h3, title='Client 3', term='xterm', cmd='python3 tpa4_chat_client.py; bash')
 
     info( '*** Starting controllers\n')
     for controller in net.controllers:
