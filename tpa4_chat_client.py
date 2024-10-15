@@ -1,3 +1,8 @@
+# Samuel Caesar, Kate Liu, and Ichiro Miyasato (Team 7)
+# 14 October 2024
+# CST 311 Programming Assignment 4
+# tpa4_chat_client.py
+
 import socket as s
 import threading
 import logging

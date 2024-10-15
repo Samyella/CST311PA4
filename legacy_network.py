@@ -1,4 +1,7 @@
-#!/usr/bin/python
+# Samuel Caesar, Kate Liu, and Ichiro Miyasato (Team 7)
+# 14 October 2024
+# CST 311 Programming Assignment 4
+# legacy_network.py
 
 from mininet.net import Mininet
 from mininet.node import Controller, RemoteController, OVSController
@@ -8,7 +11,11 @@ from mininet.node import IVSSwitch
 from mininet.cli import CLI
 from mininet.log import setLogLevel, info
 from mininet.link import TCLink, Intf
-from subprocess import call
+from mininet.term import makeTerm
+import time
+import subprocess
+subprocess.run(["sudo", "-E", "python3", "certificate_generation.py"])
+
 
 def myNetwork():
     net = Mininet(topo=None, build=False)
@@ -62,14 +69,6 @@ def myNetwork():
     r5.cmd('ip route add 10.0.1.0/24 via 192.168.0.6')
     r5.cmd('ip route add 192.168.0.0/30 via 192.168.0.6')
 
-    # Start the chat server on h4
-    makeTerm(h4, title='Server', term='xterm', cmd='python3 tpa4_chat_server.py; bash')
-
-    # Start chat clients on h1, h2, and h3
-    makeTerm(h1, title='Client 1', term='xterm', cmd='python3 tpa4_chat_client.py; bash')
-    makeTerm(h2, title='Client 2', term='xterm', cmd='python3 tpa4_chat_client.py; bash')
-    makeTerm(h3, title='Client 3', term='xterm', cmd='python3 tpa4_chat_client.py; bash')
-
     info( '*** Starting controllers\n')
     for controller in net.controllers:
         controller.start()
@@ -78,11 +77,25 @@ def myNetwork():
     net.get('s2').start([c0])
     
     info( '*** Post configure switches and hosts\n')
+    # We force sleeps here to ensure that the server script runs before all the client scripts.
+    time.sleep(1)
+    # Start the chat server on h4
+    makeTerm(h4, title='Node', term='xterm', display=None, cmd='python3 tpa4_chat_server.py; bash')
+    time.sleep(1)
+    # Start chat clients on h1, h2, and h3
+    makeTerm(h1, title='Node', term='xterm', display=None, cmd='python3 tpa4_chat_client.py; bash')
+    time.sleep(1)
+    makeTerm(h2, title='Node', term='xterm', display=None, cmd='python3 tpa4_chat_client.py; bash')
+    time.sleep(1)
+    makeTerm(h3, title='Node', term='xterm', display=None, cmd='python3 tpa4_chat_client.py; bash')
+
 
     # CLI
     CLI(net)
     net.stop()
+    net.stopXterms()
 
 if __name__ == '__main__':
+    
     setLogLevel( 'info' )
     myNetwork()

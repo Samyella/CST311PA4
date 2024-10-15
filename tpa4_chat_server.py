@@ -1,4 +1,7 @@
-#!/usr/bin/python
+# Samuel Caesar, Kate Liu, and Ichiro Miyasato (Team 7)
+# 14 October 2024
+# CST 311 Programming Assignment 4
+# tpa4_chat_server.py
 
 """Chat server for CST311 Programming Assignment 4 - Group Chat"""
 __author__ = "[team 7]"
